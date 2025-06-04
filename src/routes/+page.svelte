@@ -1,21 +1,38 @@
 <script>
-  import Header from '$lib/Header.svelte'
-  import BulmaExamples from '$lib/BulmaExamples.svelte'
+  import Header from "$lib/Header.svelte"
+  import Footer from "$lib/Footer.svelte"
+  import Nav from "$lib/Nav.svelte"
+
+  function formatDate(date) {
+    const year = date.getFullYear()
+    const month = date.toLocaleString("en-US", { month: "short" })
+    const day = String(date.getDate()).padStart(2, "0")
+    return `${year} ${month} ${day}`
+  }
+
+  const today = new Date()
+
+  // Create a new Date object and subtract 7 days, so that we can show the day of one week ago
+  const weekAgo = new Date()
+  weekAgo.setDate(today.getDate() - 7)
+
+  const start = formatDate(weekAgo)
+  const end = formatDate(today)
 </script>
 
 <Header />
 
 <main class="content section">
-  <h2>SvelteKit</h2>
+  <h2>Dashboard</h2>
 
-  <p>Welcome to coding with SvelteKit, a modern JavaScript framework that makes it easy to code great apps.</p>
+  <Nav />
 
-  <p>This template comes loaded with the <a href="https://bulma.io/documentation/">Bulma CSS framework</a>, so you can save time and focus on your project.</p>
+  <p>{start} - {end}</p>
 
-  <p>Here's some examples of colour helpers. You can change the colours in <code>theme.scss</code></p>
-  <BulmaExamples />
+  <nav><a href="/IncomeHistory"> Look Income History</a></nav>
+  <nav><a href="/ExpenseHistory"> Look Expense History</a></nav>
+  <nav><a href="/AddIncome"> Add Income</a></nav>
+  <nav><a href="/AddExpense"> Add Expense</a></nav>
 </main>
 
-<footer class="footer">
-  <p class="has-text-centered">&copy; Craighead Diocesan School 2025</p>
-</footer>
+<Footer />
