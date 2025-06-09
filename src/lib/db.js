@@ -30,6 +30,7 @@ export async function addExpense(expense) {
 export async function addIncome(income) {
     const personDoc = await addDoc(collection(db, 'incomes'), income)
 }
+
 // Gets all the transactions from the database.
 export async function getExpenses() {
     let expenseDocs = await getDocs(collection(db, 'expenses'))
@@ -39,6 +40,8 @@ export async function getExpenses() {
     expenseDocs.forEach((expenseDoc) => {
         expenses = [...expenses, expenseDoc.data()]
     })
+    // Sort by date (newest first)
+    expenses.sort((a, b) => new Date(b.date) - new Date(a.date))
 
     return expenses
 }
@@ -50,6 +53,8 @@ export async function getIncomes() {
     incomeDocs.forEach((incomeDoc) => {
         incomes = [...incomes, incomeDoc.data()]
     })
+    // Sort by date (newest first)
+    incomes.sort((a, b) => new Date(b.date) - new Date(a.date))
 
     return incomes
 }

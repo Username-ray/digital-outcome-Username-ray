@@ -1,5 +1,6 @@
 <script>
   import { addExpense, getExpenses } from "$lib/db.js"
+  import { goto } from "$app/navigation"
 
   let expenses = getExpenses()
 
@@ -7,6 +8,11 @@
     name: "",
     amount: 0,
     date: "",
+  }
+
+  async function handleAdd() {
+    await addExpense(newExpenses)
+    goto("/ExpenseHistory")
   }
 </script>
 
@@ -28,13 +34,14 @@
   </label>
 
   <label class="label">
-    Date: <input type="date" bind:value={newExpenses.month} />
+    Date: <input type="date" bind:value={newExpenses.date} />
   </label>
 
   <button
     class="button"
     on:click={() => {
-      addIncome(newExpenses)
+      addExpense(newExpenses)
+      handleAdd
     }}
   >
     Add
