@@ -1,6 +1,6 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app"
-import { getFirestore, collection, addDoc, getDocs } from 'firebase/firestore'
+import { getFirestore, collection, addDoc, deleteDoc, getDocs, doc } from 'firebase/firestore'
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -26,9 +26,11 @@ const db = getFirestore(app)
 // Saves a transaction object to the database.
 export async function addExpense(expense) {
     const personDoc = await addDoc(collection(db, 'expenses'), expense)
+    return personDoc.id
 }
 export async function addIncome(income) {
     const personDoc = await addDoc(collection(db, 'incomes'), income)
+    return personDoc.id
 }
 
 // Gets all the transactions from the database.
@@ -38,7 +40,7 @@ export async function getExpenses() {
     let expenses = []
 
     expenseDocs.forEach((expenseDoc) => {
-        expenses = [...expenses, expenseDoc.data()]
+        expenses.push({ id: expenseDoc.id, ...expenseDoc.data() })
     })
     // Sort by date (newest first)
     expenses.sort((a, b) => new Date(b.date) - new Date(a.date))
@@ -46,15 +48,22 @@ export async function getExpenses() {
     return expenses
 }
 export async function getIncomes() {
-    let incomeDocs = await getDocs(collection(db, 'incomes'))
+    const incomeDocs = await getDocs(collection(db, 'incomes'))
 
     let incomes = []
 
     incomeDocs.forEach((incomeDoc) => {
-        incomes = [...incomes, incomeDoc.data()]
+        incomes.push({ id: incomeDoc.id, ...incomeDoc.data() })
     })
     // Sort by date (newest first)
     incomes.sort((a, b) => new Date(b.date) - new Date(a.date))
 
     return incomes
+}
+// Deletes a transaction from the database.
+export async function deleteExpense(id) {
+    await deleteDoc(doc(db, 'expenses', id))
+}
+export async function deleteIncome(id) {
+    await deleteDoc(doc(db, 'incomes', id))
 }

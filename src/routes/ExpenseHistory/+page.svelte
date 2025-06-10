@@ -1,11 +1,20 @@
 <script>
   import { onMount } from "svelte"
-  import { getExpenses } from "$lib/db.js"
+  import { getExpenses, deleteExpense } from "$lib/db.js"
 
   let expenses = []
 
-  onMount(async () => {
+  async function loadExpenses() {
     expenses = await getExpenses()
+  }
+
+  async function handleDelete(id) {
+    await deleteExpense(id)
+    await loadExpenses() // Reload to the latest version.
+  }
+
+  onMount(() => {
+    loadExpenses()
   })
 </script>
 
@@ -19,6 +28,11 @@
       {#each expenses as expense}
         <li>
           {expense.name} - ${expense.amount} - {expense.date}
+          <button
+            on:click={() => {
+              handleDelete(expense.id)
+            }}>Delete</button
+          >
         </li>
       {/each}
     </ul>
