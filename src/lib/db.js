@@ -67,3 +67,36 @@ export async function deleteExpense(id) {
 export async function deleteIncome(id) {
     await deleteDoc(doc(db, 'incomes', id))
 }
+
+export async function getWeeklyTotals() {
+    const incomeDocs = await getDocs(collection(db, "incomes"))
+    const expenseDocs = await getDocs(collection(db, "expenses"))
+
+    const now = new Date()
+    const oneWeekAgo = new Date(now)
+    oneWeekAgo.setDate(now.getDate() - 6)
+
+    const isWithinLastWeek = (dateStr) => {
+        const date = new Date(dateStr)
+        return date >= oneWeekAgo && date <= now
+    }
+
+    let incomeTotal = 0
+    let expenseTotal = 0
+
+    incomeDocs.forEach(doc => {
+        const { amount, date } = doc.data()
+        if (amount && date && isWithinLastWeek(date)) {
+            incomeTotal += Number(amount)
+        }
+    })
+
+    expenseDocs.forEach(doc => {
+        const { amount, date } = doc.data()
+        if (amount && date && isWithinLastWeek(date)) {
+            expenseTotal += Number(amount)
+        }
+    })
+
+    return { incomeTotal, expenseTotal }
+}

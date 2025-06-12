@@ -2,22 +2,49 @@
   import Header from "$lib/Header.svelte"
   import Footer from "$lib/Footer.svelte"
   import Nav from "$lib/Nav.svelte"
+  import { onMount } from "svelte"
+  import Chart from "chart.js/auto"
+  import { getWeeklyTotals } from "$lib/db.js"
+
+  let canvas
+  let weekRange = ""
+  let balance = 0
 
   function formatDate(date) {
-    const year = date.getFullYear()
-    const month = date.toLocaleString("en-US", { month: "short" })
-    const day = String(date.getDate()).padStart(2, "0")
-    return `${year} ${month} ${day}`
+    return date.toLocaleDateString("en-GB") // e.g. 28/04/2025
   }
 
-  const today = new Date()
+  onMount(async () => {
+    const today = new Date()
+    const oneWeekAgo = new Date()
+    oneWeekAgo.setDate(today.getDate() - 6)
+    weekRange = `${formatDate(oneWeekAgo)} - ${formatDate(today)}`
 
-  // Create a new Date object and subtract 7 days, so that we can show the day of one week ago
-  const weekAgo = new Date()
-  weekAgo.setDate(today.getDate() - 7)
+    const { incomeTotal, expenseTotal } = await getWeeklyTotals()
 
-  const start = formatDate(weekAgo)
-  const end = formatDate(today)
+    balance = incomeTotal - expenseTotal
+
+    new Chart(canvas, {
+      type: "pie",
+      data: {
+        labels: ["Income", "Expense"],
+        datasets: [
+          {
+            data: [incomeTotal, expenseTotal],
+            backgroundColor: ["#36A2EB", "#FF6384"],
+          },
+        ],
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: {
+            position: "bottom",
+          },
+        },
+      },
+    })
+  })
 </script>
 
 <Header />
@@ -27,7 +54,9 @@
 
   <Nav />
 
-  <p>{start} - {end}</p>
+  <p>{weekRange}</p>
+  <canvas bind:this={canvas}></canvas>
+  <p>Total Balance: ${balance}</p>
 
   <nav><a href="/IncomeHistory"> Look Income History</a></nav>
   <nav><a href="/ExpenseHistory"> Look Expense History</a></nav>
