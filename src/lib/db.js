@@ -100,3 +100,25 @@ export async function getWeeklyTotals() {
 
     return { incomeTotal, expenseTotal }
 }
+
+export async function getMonthlyExpenses(year, month) {
+    const expenses = []
+    const snapshot = await getDocs(collection(db, "expenses"))
+
+    snapshot.forEach((doc) => {
+        const data = doc.data()
+        const date = new Date(data.date)
+
+        if (
+            date.getFullYear() === year &&
+            date.getMonth() + 1 === month
+        ) {
+            expenses.push({
+                date: date,
+                amount: data.amount,
+            })
+        }
+    })
+
+    return expenses
+}
