@@ -76,16 +76,26 @@ export async function getWeeklyTotals() {
     const oneWeekAgo = new Date(now)
     oneWeekAgo.setDate(now.getDate() - 6)
 
-    const isWithinLastWeek = (dateStr) => {
-        const date = new Date(dateStr)
-        return date >= oneWeekAgo && date <= now
+    function isWithinLastWeek(dateString) {
+        const recordDate = new Date(dateString)
+        const today = new Date()
+        const lastWeek = new Date()
+        lastWeek.setDate(today.getDate() - 7)
+
+        recordDate.setHours(0, 0, 0, 0)
+        today.setHours(0, 0, 0, 0)
+        lastWeek.setHours(0, 0, 0, 0)
+
+        return recordDate >= lastWeek && recordDate <= today
     }
+
 
     let incomeTotal = 0
     let expenseTotal = 0
 
     incomeDocs.forEach(doc => {
         const { amount, date } = doc.data()
+        console.log("Income record date:", date, "Type:", typeof date)
         if (amount && date && isWithinLastWeek(date)) {
             incomeTotal += Number(amount)
         }

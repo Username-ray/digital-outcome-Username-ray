@@ -46,5 +46,5 @@
   >
     Add
   </button>
-  <button>Scan Receipt</button>
+  <button on:click={() => goto("/ScanReceipt")}> Scan Receipt </button>
 </main>
