@@ -3,6 +3,7 @@
   import { getExpenses, deleteExpense } from "$lib/db.js"
 
   let expenses = []
+  let searchQuery = ""
 
   async function loadExpenses() {
     expenses = await getExpenses()
@@ -13,6 +14,11 @@
     await loadExpenses() // Reload to the latest version.
   }
 
+  $: filteredExpenses = expenses.filter((expense) => {
+    const query = searchQuery.toLowerCase()
+    return expense.name.toLowerCase().includes(query) || String(expense.amount).toLowerCase().includes(query) || String(expense.date).toLowerCase().includes(query)
+  })
+
   onMount(() => {
     loadExpenses()
   })
@@ -20,12 +26,13 @@
 
 <main>
   <h1>Expense History</h1>
+  <input type="text" placeholder="Search by name, amount, or date..." bind:value={searchQuery} />
 
-  {#if expenses.length === 0}
+  {#if filteredExpenses.length === 0}
     <p>No expense records found.</p>
   {:else}
     <ul>
-      {#each expenses as expense}
+      {#each filteredExpenses as expense}
         <li>
           {expense.name} - ${expense.amount} - {expense.date}
           <button

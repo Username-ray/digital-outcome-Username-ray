@@ -4,21 +4,25 @@
 
   let incomes = []
   let searchTerm = ""
-
   let filteredIncomes = []
 
-  onMount(async () => {
+  async function loadIncomes() {
     incomes = await getIncomes()
     filteredIncomes = incomes
-  })
+  }
 
   async function handleDelete(id) {
     await deleteIncome(id)
+    await loadIncomes()
   }
 
-  // Update the filter whenever the input changes
+  onMount(() => {
+    loadIncomes()
+  })
+
   $: if (searchTerm !== "") {
-    filteredIncomes = incomes.filter((income) => income.name?.toLowerCase().includes(searchTerm.toLowerCase()))
+    const term = searchTerm.toLowerCase()
+    filteredIncomes = incomes.filter((income) => (income.name && income.name.toLowerCase().includes(term)) || (income.amount && income.amount.toString().includes(term)) || (income.date && income.date.toString().toLowerCase().includes(term)))
   } else {
     filteredIncomes = incomes
   }
@@ -29,33 +33,19 @@
 
   <label>
     Search:
-    <input type="text" bind:value={searchTerm} placeholder="Enter name..." />
+    <input type="text" bind:value={searchTerm} placeholder="Enter name, amount, or date..." />
   </label>
 
   {#if filteredIncomes.length > 0}
     <ul>
       {#each filteredIncomes as income}
-        <li>{income.name} - ${income.amount} - {income.date || "No date"}</li>
+        <li>
+          {income.name} - ${income.amount} - {income.date || "No date"}
+          <button on:click={() => handleDelete(income.id)}>Delete</button>
+        </li>
       {/each}
     </ul>
   {:else}
     <p>No matching results</p>
-  {/if}
-
-  {#if incomes.length === 0}
-    <p>No income records found.</p>
-  {:else}
-    <ul>
-      {#each incomes as income}
-        <li>
-          {income.name} - ${income.amount} - {income.date}
-          <button
-            on:click={() => {
-              handleDelete(income.id)
-            }}>Delete</button
-          >
-        </li>
-      {/each}
-    </ul>
   {/if}
 </main>
