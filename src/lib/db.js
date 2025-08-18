@@ -1,6 +1,6 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app"
-import { getFirestore, collection, addDoc, deleteDoc, getDocs, doc } from 'firebase/firestore'
+import { getFirestore, collection, addDoc, deleteDoc, getDocs, updateDoc, doc } from 'firebase/firestore'
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -131,4 +131,14 @@ export async function getMonthlyExpenses(year, month) {
     })
 
     return expenses
+}
+
+export async function updateIncome(id, updatedData) {
+    const incomeRef = doc(db, "incomes", id)
+    await updateDoc(incomeRef, updatedData)
+}
+
+export async function updateExpense(id, updatedData) {
+    const expenseRef = doc(db, "expenses", id)
+    await updateDoc(expenseRef, updatedData)
 }

@@ -1,47 +1,82 @@
 <script>
   import { onMount } from "svelte"
-  import { getExpenses, deleteExpense } from "$lib/db.js"
+  import { getExpenses, deleteExpense, updateExpense } from "$lib/db.js"
 
   let expenses = []
-  let searchQuery = ""
+  let searchTerm = ""
+  let filteredExpenses = []
+  let editingId = null
+  let editData = { name: "", amount: "", date: "" }
 
-  async function loadExpenses() {
+  onMount(async () => {
     expenses = await getExpenses()
-  }
+    filteredExpenses = expenses
+  })
 
   async function handleDelete(id) {
     await deleteExpense(id)
-    await loadExpenses() // Reload to the latest version.
+    expenses = await getExpenses()
+    filterExpenses()
   }
 
-  $: filteredExpenses = expenses.filter((expense) => {
-    const query = searchQuery.toLowerCase()
-    return expense.name.toLowerCase().includes(query) || String(expense.amount).toLowerCase().includes(query) || String(expense.date).toLowerCase().includes(query)
-  })
+  function startEdit(expense) {
+    editingId = expense.id
+    editData = { ...expense }
+  }
 
-  onMount(() => {
-    loadExpenses()
-  })
+  async function saveEdit(id) {
+    await updateExpense(id, editData)
+    expenses = await getExpenses()
+    filterExpenses()
+    editingId = null
+  }
+
+  function cancelEdit() {
+    editingId = null
+  }
+
+  function filterExpenses() {
+    if (searchTerm !== "") {
+      filteredExpenses = expenses.filter((expense) => expense.name?.toLowerCase().includes(searchTerm.toLowerCase()) || expense.amount?.toString().includes(searchTerm) || expense.date?.includes(searchTerm))
+    } else {
+      filteredExpenses = expenses
+    }
+  }
+
+  $: filterExpenses()
 </script>
 
 <main>
   <h1>Expense History</h1>
-  <input type="text" placeholder="Search by name, amount, or date..." bind:value={searchQuery} />
 
-  {#if filteredExpenses.length === 0}
-    <p>No expense records found.</p>
-  {:else}
+  <label>
+    Search:
+    <input type="text" bind:value={searchTerm} placeholder="Enter name, amount, or date..." />
+  </label>
+
+  {#if filteredExpenses.length > 0}
     <ul>
       {#each filteredExpenses as expense}
         <li>
-          {expense.name} - ${expense.amount} - {expense.date}
-          <button
-            on:click={() => {
-              handleDelete(expense.id)
-            }}>Delete</button
-          >
+          {#if editingId === expense.id}
+            <input type="text" bind:value={editData.name} placeholder="Name" />
+            <input type="number" bind:value={editData.amount} placeholder="Amount" />
+            <input type="date" bind:value={editData.date} />
+            <button on:click={() => saveEdit(expense.id)}>Save</button>
+            <button on:click={cancelEdit}>Cancel</button>
+          {:else}
+            {expense.name} - ${expense.amount} - {expense.date || "No date"}
+            <button on:click={() => startEdit(expense)}>Edit</button>
+            <button on:click={() => handleDelete(expense.id)}>Delete</button>
+          {/if}
         </li>
       {/each}
     </ul>
+  {:else}
+    <p>No matching results</p>
+  {/if}
+
+  {#if expenses.length === 0}
+    <p>No expense records found.</p>
   {/if}
 </main>
