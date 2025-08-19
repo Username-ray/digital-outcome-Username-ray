@@ -1,6 +1,8 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app"
 import { getFirestore, collection, addDoc, deleteDoc, getDocs, updateDoc, doc } from 'firebase/firestore'
+import { auth } from "./auth.js"
+import { updateProfile } from "firebase/auth"
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -25,47 +27,52 @@ const db = getFirestore(app)
 
 // Saves a transaction object to the database.
 export async function addExpense(expense) {
-    const personDoc = await addDoc(collection(db, 'expenses'), expense)
-    return personDoc.id
+    const user = auth.currentUser
+    if (!user) throw new Error("User not logged in")
+
+    const ref = collection(db, "users", user.uid, "expenses")
+    await addDoc(ref, expense)
 }
 export async function addIncome(income) {
-    const personDoc = await addDoc(collection(db, 'incomes'), income)
-    return personDoc.id
+    const user = auth.currentUser
+    if (!user) throw new Error("User not logged in")
+
+    const ref = collection(db, "users", user.uid, "incomes")
+    await addDoc(ref, income)
 }
 
 // Gets all the transactions from the database.
 export async function getExpenses() {
-    let expenseDocs = await getDocs(collection(db, 'expenses'))
+    const user = auth.currentUser
+    if (!user) throw new Error("User not logged in")
 
-    let expenses = []
-
-    expenseDocs.forEach((expenseDoc) => {
-        expenses.push({ id: expenseDoc.id, ...expenseDoc.data() })
-    })
-    // Sort by date (newest first)
-    expenses.sort((a, b) => new Date(b.date) - new Date(a.date))
-
-    return expenses
+    const ref = collection(db, "users", user.uid, "expenses")
+    const snapshot = await getDocs(ref)
+    return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }))
 }
 export async function getIncomes() {
-    const incomeDocs = await getDocs(collection(db, 'incomes'))
+    const user = auth.currentUser
+    if (!user) throw new Error("User not logged in")
 
-    let incomes = []
-
-    incomeDocs.forEach((incomeDoc) => {
-        incomes.push({ id: incomeDoc.id, ...incomeDoc.data() })
-    })
-    // Sort by date (newest first)
-    incomes.sort((a, b) => new Date(b.date) - new Date(a.date))
-
-    return incomes
+    const ref = collection(db, "users", user.uid, "incomes")
+    const snapshot = await getDocs(ref)
+    return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }))
 }
+
 // Deletes a transaction from the database.
 export async function deleteExpense(id) {
-    await deleteDoc(doc(db, 'expenses', id))
+    const user = auth.currentUser
+    if (!user) throw new Error("User not logged in")
+
+    const ref = doc(db, "users", user.uid, "expenses", id)
+    await deleteDoc(ref)
 }
 export async function deleteIncome(id) {
-    await deleteDoc(doc(db, 'incomes', id))
+    const user = auth.currentUser
+    if (!user) throw new Error("User not logged in")
+
+    const ref = doc(db, "users", user.uid, "incomes", id)
+    await deleteDoc(ref)
 }
 
 export async function getWeeklyTotals() {
@@ -141,4 +148,44 @@ export async function updateIncome(id, updatedData) {
 export async function updateExpense(id, updatedData) {
     const expenseRef = doc(db, "expenses", id)
     await updateDoc(expenseRef, updatedData)
+}
+
+// --- Authentication helpers ---
+export async function signup(email, password) {
+    return await createUserWithEmailAndPassword(auth, email, password)
+}
+
+export async function login(email, password) {
+    return await signInWithEmailAndPassword(auth, email, password)
+}
+
+export async function logout() {
+    return signOut(auth)
+}
+
+export async function loginWithGoogle() {
+    return signInWithPopup(auth, provider)
+}
+
+export function watchAuth(callback) {
+    return onAuthStateChanged(auth, callback)
+}
+
+export async function changeEmail(newEmail) {
+    if (auth.currentUser) {
+        await updateEmail(auth.currentUser, newEmail)
+    }
+}
+
+export async function changePassword(newPassword) {
+    if (auth.currentUser) {
+        await updatePassword(auth.currentUser, newPassword)
+    }
+}
+
+export { auth }
+
+export async function updateDisplayName(name) {
+    if (!auth.currentUser) throw new Error("No user logged in")
+    await updateProfile(auth.currentUser, { displayName: name })
 }
