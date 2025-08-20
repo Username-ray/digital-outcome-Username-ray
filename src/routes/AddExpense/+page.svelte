@@ -1,6 +1,8 @@
 <script>
   import { addExpense, getExpenses } from "$lib/db.js"
   import { goto } from "$app/navigation"
+  import { lang } from "$lib/stores/lang.js"
+  import i18n from "$lib/i18n.json"
 
   let expenses = getExpenses()
 
@@ -18,7 +20,7 @@
 
 <main>
   {#await expenses}
-    <p>Loading...</p>
+    <p>{i18n[$lang].app.loading}</p>
   {:then expenses}
     {#each expenses as expense}
       <p>{expense.name} {expense.amount} {expense.date}</p>
@@ -26,15 +28,15 @@
   {/await}
 
   <label class="label">
-    Name: <input bind:value={newExpenses.name} />
+    {i18n[$lang].app.name}: <input bind:value={newExpenses.name} />
   </label>
 
   <label class="label">
-    Amount: $<input type="number" bind:value={newExpenses.amount} />
+    {i18n[$lang].app.amount}: $<input type="number" bind:value={newExpenses.amount} />
   </label>
 
   <label class="label">
-    Date: <input type="date" bind:value={newExpenses.date} />
+    {i18n[$lang].app.date}: <input type="date" bind:value={newExpenses.date} />
   </label>
 
   <button
@@ -44,7 +46,7 @@
       handleAdd
     }}
   >
-    Add
+    {i18n[$lang].app.add}
   </button>
-  <button on:click={() => goto("/ScanReceipt")}> Scan Receipt </button>
+  <button on:click={() => goto("/ScanReceipt")}> {i18n[$lang].app.scan_receipt} </button>
 </main>

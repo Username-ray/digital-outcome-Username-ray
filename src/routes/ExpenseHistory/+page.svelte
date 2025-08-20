@@ -1,6 +1,8 @@
 <script>
   import { onMount } from "svelte"
   import { getExpenses, deleteExpense, updateExpense } from "$lib/db.js"
+  import { lang } from "$lib/stores/lang.js"
+  import i18n from "$lib/i18n.json"
 
   let expenses = []
   let searchTerm = ""
@@ -47,11 +49,11 @@
 </script>
 
 <main>
-  <h1>Expense History</h1>
+  <h1>{i18n[$lang].app.expense_history}</h1>
 
   <label>
-    Search:
-    <input type="text" bind:value={searchTerm} placeholder="Enter name, amount, or date..." />
+    {i18n[$lang].app.search}:
+    <input type="text" bind:value={searchTerm} placeholder={i18n[$lang].app.enter} />
   </label>
 
   {#if filteredExpenses.length > 0}
@@ -59,24 +61,20 @@
       {#each filteredExpenses as expense}
         <li>
           {#if editingId === expense.id}
-            <input type="text" bind:value={editData.name} placeholder="Name" />
-            <input type="number" bind:value={editData.amount} placeholder="Amount" />
+            <input type="text" bind:value={editData.name} />
+            <input type="number" bind:value={editData.amount} />
             <input type="date" bind:value={editData.date} />
-            <button on:click={() => saveEdit(expense.id)}>Save</button>
-            <button on:click={cancelEdit}>Cancel</button>
+            <button on:click={() => saveEdit(expense.id)}>{i18n[$lang].app.save}</button>
+            <button on:click={cancelEdit}>{i18n[$lang].app.cancel}</button>
           {:else}
             {expense.name} - ${expense.amount} - {expense.date || "No date"}
-            <button on:click={() => startEdit(expense)}>Edit</button>
-            <button on:click={() => handleDelete(expense.id)}>Delete</button>
+            <button on:click={() => startEdit(expense)}>{i18n[$lang].app.edit}</button>
+            <button on:click={() => handleDelete(expense.id)}>{i18n[$lang].app.delete}</button>
           {/if}
         </li>
       {/each}
     </ul>
   {:else}
-    <p>No matching results</p>
-  {/if}
-
-  {#if expenses.length === 0}
-    <p>No expense records found.</p>
+    <p>{i18n[$lang].app.no_matching_results}</p>
   {/if}
 </main>

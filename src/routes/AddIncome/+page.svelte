@@ -1,6 +1,8 @@
 <script>
   import { addIncome, getIncomes } from "$lib/db.js"
   import { goto } from "$app/navigation"
+  import { lang } from "$lib/stores/lang.js"
+  import i18n from "$lib/i18n.json"
 
   let incomes = getIncomes()
 
@@ -18,7 +20,7 @@
 
 <main>
   {#await incomes}
-    <p>Loading...</p>
+    <p>{i18n[$lang].app.loading}</p>
   {:then incomes}
     {#each incomes as income}
       <p>{income.name} {income.amount} {income.date}</p>
@@ -26,15 +28,15 @@
   {/await}
 
   <label class="label">
-    Name: <input bind:value={newIncomes.name} />
+    {i18n[$lang].app.name}: <input bind:value={newIncomes.name} />
   </label>
 
   <label class="label">
-    Amount: $<input type="number" bind:value={newIncomes.amount} />
+    {i18n[$lang].app.amount}: $<input type="number" bind:value={newIncomes.amount} />
   </label>
 
   <label class="label">
-    Date: <input type="date" bind:value={newIncomes.date} />
+    {i18n[$lang].app.date}: <input type="date" bind:value={newIncomes.date} />
   </label>
 
   <button
@@ -44,7 +46,7 @@
       handleAdd
     }}
   >
-    Add
+    {i18n[$lang].app.add}
   </button>
-  <button>Import from E-Wallet</button>
+  <button>{i18n[$lang].app.import}</button>
 </main>

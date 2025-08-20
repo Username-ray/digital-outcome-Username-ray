@@ -2,6 +2,8 @@
   import { onMount } from "svelte"
   import Chart from "chart.js/auto"
   import { getMonthlyExpenses } from "$lib/db.js"
+  import { lang } from "$lib/stores/lang.js"
+  import i18n from "$lib/i18n.json"
 
   let canvas
   let chart
@@ -64,7 +66,7 @@
 <main>
   <div class="container">
     <div class="budget">
-      <h2>Budget Overview</h2>
+      <h2>{i18n[$lang].app.budget_overview}</h2>
       <p>{year} {currentDate.toLocaleString("default", { month: "long" })}</p>
 
       <div class="weekdays">

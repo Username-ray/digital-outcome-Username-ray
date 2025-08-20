@@ -5,6 +5,8 @@
   import { onMount } from "svelte"
   import Chart from "chart.js/auto"
   import { getWeeklyTotals } from "$lib/db.js"
+  import { lang } from "$lib/stores/lang.js"
+  import i18n from "$lib/i18n.json"
 
   let canvas
   let weekRange = ""
@@ -46,7 +48,7 @@
     })
   })
 
-  import { auth, loginWithGoogle, logout } from "$lib/auth"
+  import { auth, loginWithGoogle, logout } from "$lib/auth.js"
   import { goto } from "$app/navigation"
 
   let user = null
@@ -71,29 +73,29 @@
 
 <main>
   {#if user}
-    <p>Welcome {user.email}</p>
-    <button on:click={handleLogout}>Logout</button>
+    <p>{i18n[$lang].dashboard.welcome} {user.email}</p>
+    <button on:click={handleLogout}>{i18n[$lang].settings.logout}</button>
   {:else}
-    <h1>Sign in</h1>
-    <button on:click={handleLogin}>Sign in with Google</button>
+    <p>{i18n[$lang].dashboard.sign_in}</p>
+    <button on:click={handleLogin}>{i18n[$lang].dashboard.sign_in_with_google}</button>
   {/if}
 </main>
 
 <Header />
 
 <main class="content section">
-  <h2>Dashboard</h2>
+  <h1>{i18n[$lang].dashboard.title}</h1>
 
   <Nav />
 
   <p>{weekRange}</p>
   <canvas bind:this={canvas}></canvas>
-  <p>Total Balance: ${balance}</p>
+  <p>{i18n[$lang].dashboard.balance}: ${balance}</p>
 
-  <nav><a href="/IncomeHistory"> Look Income History</a></nav>
-  <nav><a href="/ExpenseHistory"> Look Expense History</a></nav>
-  <nav><a href="/AddIncome"> Add Income</a></nav>
-  <nav><a href="/AddExpense"> Add Expense</a></nav>
+  <nav><a href="/IncomeHistory"> {i18n[$lang].dashboard.look_income_history} </a></nav>
+  <nav><a href="/ExpenseHistory"> {i18n[$lang].dashboard.look_expense_history} </a></nav>
+  <nav><a href="/AddIncome"> {i18n[$lang].dashboard.add_income} </a></nav>
+  <nav><a href="/AddExpense"> {i18n[$lang].dashboard.add_expense} </a></nav>
 </main>
 
 <Footer />

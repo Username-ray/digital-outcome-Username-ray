@@ -1,6 +1,8 @@
 <script>
   import { onMount } from "svelte"
   import { getIncomes, deleteIncome, updateIncome } from "$lib/db.js"
+  import { lang } from "$lib/stores/lang.js"
+  import i18n from "$lib/i18n.json"
 
   let incomes = []
   let searchTerm = ""
@@ -55,11 +57,11 @@
 </script>
 
 <main>
-  <h1>Income History</h1>
+  <h1>{i18n[$lang].app.income_history}</h1>
 
   <label>
-    Search:
-    <input type="text" bind:value={searchTerm} placeholder="Enter name, amount, or date..." />
+    {i18n[$lang].app.search}:
+    <input type="text" bind:value={searchTerm} placeholder={i18n[$lang].app.enter} />
   </label>
 
   {#if filteredIncomes.length > 0}
@@ -71,17 +73,17 @@
             <input type="number" bind:value={editAmount} />
             <input type="date" bind:value={editDate} />
 
-            <button on:click={saveEdit}>Save</button>
-            <button on:click={cancelEdit}>Cancel</button>
+            <button on:click={saveEdit}>{i18n[$lang].app.save}</button>
+            <button on:click={cancelEdit}>{i18n[$lang].app.cancel}</button>
           {:else}
             {income.name} - ${income.amount} - {income.date || "No date"}
-            <button on:click={() => startEdit(income)}>Edit</button>
-            <button on:click={() => handleDelete(income.id)}>Delete</button>
+            <button on:click={() => startEdit(income)}>{i18n[$lang].app.edit}</button>
+            <button on:click={() => handleDelete(income.id)}>{i18n[$lang].app.delete}</button>
           {/if}
         </li>
       {/each}
     </ul>
   {:else}
-    <p>No matching results</p>
+    <p>{i18n[$lang].app.no_matching_results}</p>
   {/if}
 </main>
