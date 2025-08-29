@@ -8,3 +8,13 @@
     <h1 class="title">{i18n[$lang].app.app}</h1>
   </div>
 </header>
+
+<style>
+  .title {
+    font-size: 64px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0rem;
+  }
+</style>

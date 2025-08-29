@@ -5,13 +5,11 @@
       "current_user": "Current User",
       "change_user_name": "Change Username",
       "user_name": "Username",
-      "update_name": "Update Name",
       "change_email": "Change Email",
       "new_email": "New Email",
-      "update_email": "Update Email",
       "change_password": "Change Password",
       "new_password": "New Password",
-      "update_password": "Update Password",
+      "update": "Update",
       "logout": "Log out",
       "language": "Language"
     },
@@ -38,7 +36,7 @@
         "edit": "Edit",
         "delete": "Delete",
         "no_matching_results": "No Matching Results",
-        "enter": "Enter name, amount, or date...",
+        "enter": "Enter name, amount, or date",
         "expense_history": "Expense History",
         "loading": "Loading...",
         "name": "Name",
@@ -46,7 +44,8 @@
         "date": "Date",
         "add": "Add",
         "import": "Import From E-Wallet",
-        "scan_receipt": "Scan Receipt"
+        "scan_receipt": "Scan Receipt",
+        "scan_save": "Scan and save"
     }
   },
   "ja": {
@@ -55,13 +54,11 @@
       "current_user": "現在のユーザー",
       "change_user_name": "ユーザー名変更",
       "user_name": "ユーザー名",
-      "update_name": "ユーザー名を更新",
       "change_email": "メールアドレス変更",
       "new_email": "新しいメールアドレス",
-      "update_email": "メールを更新",
       "change_password": "パスワード変更",
       "new_password": "新しいパスワード",
-      "update_password": "パスワードを更新",
+      "update": "更新",
       "logout": "ログアウト",
       "language": "言語"
     },
@@ -96,7 +93,8 @@
         "date": "日付",
         "add": "追加",
         "import": "Eマネーからインポート",
-        "scan_receipt": "レシートをスキャン"
+        "scan_receipt": "レシートをスキャン",
+        "scan_save": "スキャンして保存"
     }
   },
   "mi": {
@@ -105,13 +103,11 @@
       "current_user": "Kaiwhakamahi o nāianei",
       "change_user_name": "Hurihia te Ingoa Kaiwhakamahi",
       "user_name": "Ingoa Kaiwhakamahi",
-      "update_name": "Whakahou ingoa",
       "change_email": "Hurihia te īmēra",
       "new_email": "Īmēra hou",
-      "update_email": "Whakahou īmēra",
       "change_password": "Hurihia te kupuhipa",
       "new_password": "Kupuhipa hou",
-      "update_password": "Whakahou kupuhipa",
+      "update": "Whakahou",
       "logout": "Takiputa",
       "language": "Reo"
     },
@@ -138,7 +134,7 @@
         "edit": "Whakatikatika",
         "delete": "Mukua",
         "no_matching_results": "Karekau He Hua Taurite",
-        "enter": "Whakauruhia te ingoa, te moni, te ra ranei...",
+        "enter": "Whakauruhia te ingoa, te moni, te ra ranei",
         "expense_history": "Hītori Whakapaunga",
         "loading": "Uta ana...",
         "name": "Ingoa",
@@ -146,7 +142,8 @@
         "date": "Rā",
         "add": "Tāpiri",
         "import": "Kawemai Mai i E-Wallet",
-        "scan_receipt": "Matawai Rihiti"
+        "scan_receipt": "Matawai Rihiti",
+        "scan_save": "Matawai ka tiaki"
   }
 }
 }

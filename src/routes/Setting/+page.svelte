@@ -1,4 +1,7 @@
 <script>
+  import Header from "$lib/Header.svelte"
+  import Footer from "$lib/Footer.svelte"
+  import Nav from "$lib/Nav.svelte"
   import { auth, changeEmail, changePassword, logout, updateDisplayName } from "$lib/db.js"
   import { goto } from "$app/navigation"
   import { onMount } from "svelte"
@@ -53,31 +56,33 @@
   }
 </script>
 
+<Header />
+
+<Nav />
+
 <main>
   <h1>{i18n[$lang].settings.title}</h1>
 
-  <p><b>{i18n[$lang].settings.current_user}:</b> {auth.currentUser?.email}</p>
+  <p class="user">{i18n[$lang].settings.current_user}:</p>
+  <p>{auth.currentUser?.email}</p>
 
   <div>
-    <h3>{i18n[$lang].settings.change_user_name}</h3>
-    <input type="text" bind:value={newDisplayName} placeholder={i18n[$lang].settings.user_name} />
-    <button on:click={handleDisplayNameChange}>{i18n[$lang].settings.update_name}</button>
+    <h2>{i18n[$lang].settings.change_user_name}:</h2>
+    <input type="text" bind:value={newDisplayName} placeholder={i18n[$lang].settings.user_name} /><button class="update" on:click={handleDisplayNameChange}>{i18n[$lang].settings.update}</button>
   </div>
 
   <div>
-    <h3>{i18n[$lang].settings.change_email}</h3>
-    <input type="email" bind:value={newEmail} placeholder={i18n[$lang].settings.new_email} />
-    <button on:click={handleEmailChange}>{i18n[$lang].settings.update_email}</button>
+    <h2>{i18n[$lang].settings.change_email}:</h2>
+    <input type="email" bind:value={newEmail} placeholder={i18n[$lang].settings.new_email} /><button class="update" on:click={handleEmailChange}>{i18n[$lang].settings.update}</button>
   </div>
 
   <div>
-    <h3>{i18n[$lang].settings.change_password}</h3>
-    <input type="password" bind:value={newPassword} placeholder={i18n[$lang].settings.new_password} />
-    <button on:click={handlePasswordChange}>{i18n[$lang].settings.update_password}</button>
+    <h2>{i18n[$lang].settings.change_password}:</h2>
+    <input type="password" bind:value={newPassword} placeholder={i18n[$lang].settings.new_password} /><button class="update" on:click={handlePasswordChange}>{i18n[$lang].settings.update}</button>
   </div>
 
-  <div>
-    <label for="lang-select">{i18n[$lang]?.settings?.language}</label>
+  <div class="language">
+    <label for="lang-select">{i18n[$lang]?.settings?.language}:</label>
     <select id="lang-select" on:change={handleLanguageChange} bind:value={$lang}>
       <option value="en">English</option>
       <option value="ja">日本語</option>
@@ -87,5 +92,63 @@
 
   <p style="color:green">{message}</p>
 
-  <button on:click={handleLogout}>{i18n[$lang].settings.logout}</button>
+  <div class="logout"><button class="logoutbutton" on:click={handleLogout}>{i18n[$lang].settings.logout}</button></div>
 </main>
+
+<Footer />
+
+<style>
+  main {
+    display: grid;
+    justify-content: center;
+    margin: 30px;
+  }
+
+  h1 {
+    font-family: "Fredoka", cursive;
+    font-weight: bold;
+    font-size: 58px;
+    text-align: center;
+    color: #a70000;
+    margin: 30px;
+  }
+
+  h2 {
+    margin: 10px 0px;
+    font-weight: bold;
+  }
+
+  .user {
+    font-weight: bold;
+  }
+
+  .update {
+    margin-left: 10px;
+    background-color: #a70000;
+    padding: 0.4rem 1.2rem;
+    border-radius: 10px;
+    color: #ffffff;
+  }
+
+  .language,
+  .logout {
+    margin-top: 10px;
+  }
+
+  .logoutbutton {
+    background-color: #a70000;
+    padding: 0.5rem 1.2rem;
+    font-family: "Fredoka", cursive;
+    margin: 20px 0px;
+    border-radius: 10px;
+    font-weight: bold;
+    font-size: 20px;
+    color: #ffffff;
+  }
+
+  input {
+    padding: 0.6rem 1.2rem;
+    border-radius: 10px;
+    border: 1px solid #ffffff;
+  }
+</style>

@@ -1,4 +1,7 @@
 <script>
+  import Header from "$lib/Header.svelte"
+  import Footer from "$lib/Footer.svelte"
+  import Nav from "$lib/Nav.svelte"
   import { onMount } from "svelte"
   import Chart from "chart.js/auto"
   import { getMonthlyExpenses } from "$lib/db.js"
@@ -18,7 +21,7 @@
 
   async function drawChart() {
     const data = await getMonthlyExpenses(year, month + 1) // month is 1-indexed here
-    console.log("取得されたデータ：", data)
+    console.log("Data obtained:", data)
     expenses = Array(daysInMonth).fill(0)
 
     data.forEach(({ date, amount }) => {
@@ -59,14 +62,22 @@
       },
     })
   }
-
+  onMount(async () => {
+    console.log("Canvas at mount:", canvas)
+    await drawChart()
+    console.log("Chart after draw:", chart)
+  })
   onMount(drawChart)
 </script>
 
+<Header />
+
+<Nav />
+
 <main>
+  <h1>{i18n[$lang].app.budget_overview}</h1>
   <div class="container">
     <div class="budget">
-      <h2>{i18n[$lang].app.budget_overview}</h2>
       <p>{year} {currentDate.toLocaleString("default", { month: "long" })}</p>
 
       <div class="weekdays">
@@ -92,6 +103,8 @@
   </div>
 </main>
 
+<Footer />
+
 <style>
   .container {
     display: flex;
@@ -103,11 +116,24 @@
   .budget {
     flex: 1;
   }
+  h1 {
+    font-family: "Fredoka", cursive;
+    font-size: 58px;
+    color: #a70000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0.5rem;
+    font-weight: bold;
+    margin: 1.5rem 0;
+  }
 
   .budget p {
     font-size: 40px;
     font-weight: bold;
     margin-bottom: 8px;
+    margin-left: 30px;
+    font-family: "Fredoka", cursive;
   }
 
   .weekdays,
@@ -116,10 +142,13 @@
     grid-template-columns: repeat(7, 40px);
     gap: 8px;
     text-align: center;
+    margin: 30px;
+    font-family: "Fredoka", cursive;
   }
 
   .weekdays div {
     font-weight: bold;
+    font-family: "Fredoka", cursive;
   }
 
   .calendar .day {
@@ -135,6 +164,7 @@
     background-color: darkred;
     color: white;
     font-weight: bold;
+    font-family: "Fredoka", cursive;
   }
 
   .graph {
@@ -143,6 +173,7 @@
     padding: 16px;
     border-radius: 16px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin: 30px;
   }
 
   canvas {

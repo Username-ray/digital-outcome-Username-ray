@@ -17,3 +17,15 @@
   $family-primary: $primary-font,
   $title-family: $title-font,
 );
+
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: $primary-font;
+  background-color: $background-color;
+  color: $text-color;
+}
+
+h1, h2, h3 {
+  font-family: $title-font;
+}

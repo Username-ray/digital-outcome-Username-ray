@@ -1,7 +1,12 @@
 <script>
+  import Header from "$lib/Header.svelte"
+  import Footer from "$lib/Footer.svelte"
+  import Nav from "$lib/Nav.svelte"
   import { onMount } from "svelte"
   import Tesseract from "tesseract.js"
   import { addExpense } from "$lib/db.js"
+  import { lang } from "$lib/stores/lang.js"
+  import i18n from "$lib/i18n.json"
 
   let videoEl
   let canvasEl
@@ -54,11 +59,49 @@
   })
 </script>
 
-<main class="p-4">
-  <h1 class="text-xl font-bold">Scan Receipt</h1>
+<Header />
 
-  <video id="video" autoplay playsinline class="w-full max-w-md rounded" />
+<Nav />
+
+<main class="p-4">
+  <h1>{i18n[$lang].app.scan_receipt}</h1>
+
+  <video id="video" autoplay playsinline />
   <canvas id="canvas" width="400" height="300" class="hidden"></canvas>
 
-  <button class="mt-4 px-4 py-2 bg-blue-500 text-white rounded" on:click={captureAndProcess}> Scan and save </button>
+  <button on:click={captureAndProcess}> {i18n[$lang].app.scan_save} </button>
 </main>
+
+<Footer />
+
+<style>
+  h1 {
+    font-family: "Fredoka", cursive;
+    font-size: 58px;
+    color: #a70000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0.5rem;
+    font-weight: bold;
+    margin: 1.5rem 0;
+  }
+
+  button {
+    background: #a70000;
+    color: white;
+    padding: 0.8rem 1.2rem;
+    margin-bottom: 20px;
+    border-radius: 20px;
+    font-family: "Fredoka", cursive;
+    font-size: 30px;
+    font-weight: bold;
+    text-align: center;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+    text-decoration: none;
+  }
+
+  button:hover {
+    background: #a70000;
+  }
+</style>

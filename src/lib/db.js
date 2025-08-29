@@ -76,8 +76,11 @@ export async function deleteIncome(id) {
 }
 
 export async function getWeeklyTotals() {
-    const incomeDocs = await getDocs(collection(db, "incomes"))
-    const expenseDocs = await getDocs(collection(db, "expenses"))
+    const user = auth.currentUser
+    if (!user) throw new Error("User not logged in")
+
+    const incomeDocs = await getDocs(collection(db, "users", user.uid, "incomes"))
+    const expenseDocs = await getDocs(collection(db, "users", user.uid, "expenses"))
 
     const now = new Date()
     const oneWeekAgo = new Date(now)
@@ -102,7 +105,6 @@ export async function getWeeklyTotals() {
 
     incomeDocs.forEach(doc => {
         const { amount, date } = doc.data()
-        console.log("Income record date:", date, "Type:", typeof date)
         if (amount && date && isWithinLastWeek(date)) {
             incomeTotal += Number(amount)
         }
@@ -119,8 +121,11 @@ export async function getWeeklyTotals() {
 }
 
 export async function getMonthlyExpenses(year, month) {
+    const user = auth.currentUser
+    if (!user) throw new Error("User not logged in")
+
     const expenses = []
-    const snapshot = await getDocs(collection(db, "expenses"))
+    const snapshot = await getDocs(collection(db, "users", user.uid, "expenses"))
 
     snapshot.forEach((doc) => {
         const data = doc.data()
@@ -141,12 +146,12 @@ export async function getMonthlyExpenses(year, month) {
 }
 
 export async function updateIncome(id, updatedData) {
-    const incomeRef = doc(db, "incomes", id)
+    const incomeRef = doc(db, "users", user.uid, "incomes", id)
     await updateDoc(incomeRef, updatedData)
 }
 
 export async function updateExpense(id, updatedData) {
-    const expenseRef = doc(db, "expenses", id)
+    const expenseRef = doc(db, "users", user.uid, "expenses", id)
     await updateDoc(expenseRef, updatedData)
 }
 
