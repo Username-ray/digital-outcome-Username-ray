@@ -41,4 +41,16 @@
     background: black;
     border-radius: 2px;
   }
+
+  @media (max-width: 768px) {
+    nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background: white; /* デザイン次第で変更 */
+      box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+      z-index: 1000;
+    }
+  }
 </style>

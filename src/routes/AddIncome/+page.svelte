@@ -143,4 +143,52 @@
     align-items: center;
     gap: 20px;
   }
+
+  @media (max-width: 768px) {
+    h1 {
+      font-size: 32px;
+      text-align: center;
+    }
+
+    .contents {
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      margin: 0 auto;
+      width: 100%;
+      max-width: 500px;
+    }
+
+    .form {
+      width: 100%;
+      max-width: 250px;
+    }
+
+    input {
+      width: 100%;
+      font-size: 15px;
+      margin: 0;
+    }
+
+    .button-group {
+      margin: 0 auto;
+      align-items: center;
+    }
+
+    button {
+      width: 100%;
+      max-width: 200px;
+      font-size: 18px;
+      margin-left: auto;
+      margin-right: auto;
+      margin-top: 0;
+      margin-bottom: 20px;
+    }
+
+    p {
+      margin: 0;
+      text-align: center;
+    }
+  }
 </style>

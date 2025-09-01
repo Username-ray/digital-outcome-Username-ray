@@ -17,4 +17,14 @@
     align-items: center;
     padding: 0rem;
   }
+
+  @media (max-width: 768px) {
+    .title {
+      font-size: 45px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 0rem;
+    }
+  }
 </style>

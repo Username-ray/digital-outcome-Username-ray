@@ -75,4 +75,18 @@
     flex-direction: column;
     text-align: center;
   }
+  @media (max-width: 768px) {
+    h1 {
+      font-size: 32px;
+      text-align: center;
+    }
+
+    button {
+      font-size: 20px;
+      padding: 0.6rem 1rem;
+      border-radius: 15px;
+      margin: 0 auto;
+      width: 80%;
+    }
+  }
 </style>

@@ -151,4 +151,11 @@
     border-radius: 10px;
     border: 1px solid #ffffff;
   }
+
+  @media (max-width: 768px) {
+    h1 {
+      font-size: 32px;
+      text-align: center;
+    }
+  }
 </style>

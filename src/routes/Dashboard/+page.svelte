@@ -94,6 +94,8 @@
   </div>
 </main>
 
+<Nav />
+
 <button class="chatbot">Chatbot</button>
 
 <Footer />
@@ -215,5 +217,69 @@
     font-family: "Fredoka", cursive;
     cursor: pointer;
     box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+  }
+
+  @media (max-width: 768px) {
+    .title {
+      font-size: 32px;
+      text-align: center;
+    }
+
+    .period {
+      font-size: 16px;
+      margin-bottom: 80px;
+    }
+
+    .content {
+      flex-direction: column;
+      gap: 2rem;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .balance-chart {
+      height: auto;
+    }
+
+    .circle {
+      width: 250px;
+      height: 250px;
+    }
+
+    .circle p {
+      font-size: 18px;
+    }
+
+    .circle h2 {
+      font-size: 28px;
+    }
+
+    .actions {
+      margin-top: 2rem;
+      gap: 0.8rem;
+    }
+
+    .action-btn {
+      font-size: 20px;
+      padding: 0.6rem 1rem;
+      border-radius: 15px;
+      margin: 0 auto;
+      width: 80%;
+    }
+
+    .chatbot {
+      bottom: 80px;
+    }
+
+    .circle::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      border: 10px solid transparent;
+      border-top-color: #a70000;
+      transform: rotate(90deg);
+      clip-path: inset(0 0 50% 0);
+    }
   }
 </style>

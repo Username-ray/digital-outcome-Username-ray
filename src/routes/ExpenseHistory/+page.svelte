@@ -190,4 +190,63 @@
     text-decoration: none;
     border: 1px solid #ffffff;
   }
+  @media (max-width: 768px) {
+    h1 {
+      font-size: 32px;
+      text-align: center;
+    }
+
+    img {
+      width: 20px;
+      height: 20px;
+    }
+
+    input {
+      padding: 0.2rem 1.9rem;
+      margin-left: 10px;
+      border-radius: 12px;
+      width: 250px;
+      font-size: 15px;
+      text-decoration: none;
+      border: 1px solid #ffffff;
+    }
+
+    .card-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .name {
+      font-size: 25px;
+      font-family: "Fredoka", cursive;
+      font-weight: bold;
+    }
+    .amount {
+      font-size: 15px;
+      font-family: "Fredoka", cursive;
+      font-weight: bold;
+    }
+
+    .date {
+      font-size: 12px;
+      text-align: left;
+    }
+
+    button {
+      background: #a70000;
+      color: white;
+      padding: 0.2rem 1.9rem;
+      margin-top: 40px;
+      border-radius: 10px;
+      font-family: "Fredoka", cursive;
+      font-size: 18px;
+      font-weight: bold;
+      text-align: center;
+      box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+      text-decoration: none;
+    }
+  }
 </style>

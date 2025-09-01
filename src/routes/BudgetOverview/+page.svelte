@@ -103,6 +103,8 @@
   </div>
 </main>
 
+<Nav />
+
 <Footer />
 
 <style>
@@ -179,5 +181,23 @@
   canvas {
     width: 100%;
     height: auto;
+  }
+
+  @media (max-width: 768px) {
+    h1 {
+      font-size: 32px;
+      text-align: center;
+    }
+
+    .container {
+      flex-direction: column;
+      gap: 2rem;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .budget p {
+      font-size: 24px;
+    }
   }
 </style>
