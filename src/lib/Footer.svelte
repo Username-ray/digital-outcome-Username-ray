@@ -10,4 +10,10 @@
     align-items: center;
     padding: 2rem;
   }
+
+  @media (max-width: 768px) {
+    footer {
+      padding-bottom: 100px;
+    }
+  }
 </style>
